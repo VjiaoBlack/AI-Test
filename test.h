@@ -15,6 +15,8 @@ char keys_held[323] = {0}; // assignment usually done during setup, but
 int mouse_x, mouse_y;
 int mouse_xvel, mouse_yvel;
 
+int player_x, player_y;
+
 
 int dmg;
 
