@@ -13,6 +13,7 @@ int main(int argv, char* argc[]) {
     dmg = 0;
 
     enemy_x = enemy_y = 100;
+    player_x = player_y = 100;
 
 
     open_window(800,640);
@@ -38,6 +39,25 @@ int main(int argv, char* argc[]) {
         if (dmg >= 100) {
             close_window();
             quit(0);
+        }
+
+
+
+        int dx = player_x - mouse_x;
+        int dy = player_y - mouse_y;
+
+        float angle = atan2(dy, dx);
+
+        if (abs(player_x - mouse_x) < 3 && abs(player_y - mouse_y) < 3) {
+            player_x = mouse_x;
+            player_y = mouse_y;
+            dmg++;
+        } else {
+            if (player_x != mouse_x)
+                player_x -= 4.0 * cos(angle);
+
+            if (player_y != mouse_y)
+                player_y -= 4.0 * sin(angle);
         }
 
 
@@ -93,27 +113,27 @@ void get_input() {
 
 void draw() {
 
-    draw_circle(screen,mouse_x, mouse_y,5,pixel(100,200 - dmg,100));
+    draw_circle(screen,player_x, player_y,5,pixel(100,200 - dmg,100));
 
     draw_circle(screen,enemy_x, enemy_y, 10, pixel(100 + dmg,100,100));
 
 }
 
 void enemy_ai() {
-    int dx = enemy_x - mouse_x;
-    int dy = enemy_y - mouse_y;
+    int dx = enemy_x - player_x;
+    int dy = enemy_y - player_y;
 
     float angle = atan2(dy, dx);
 
-    if (abs(enemy_x - mouse_x) < 3 && abs(enemy_y - mouse_y) < 3) {
-        enemy_x = mouse_x;
-        enemy_y = mouse_y;
+    if (abs(enemy_x - player_x) < 3 && abs(enemy_y - player_y) < 3) {
+        enemy_x = player_x;
+        enemy_y = player_y;
         dmg++;
     } else {
-        if (enemy_x != mouse_x)
+        if (enemy_x != player_x)
             enemy_x -= 3.0 * cos(angle);
 
-        if (enemy_y != mouse_y)
+        if (enemy_y != player_y)
             enemy_y -= 3.0 * sin(angle);
     }
 }
